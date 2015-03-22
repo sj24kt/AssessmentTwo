@@ -9,20 +9,21 @@
 #import <UIKit/UIKit.h>
 #import "City.h"
 
+// create Protocol
+@protocol DetailViewControllerDelegate <NSObject>
+- (void)changeTitleButtonTapped:(NSString *)cityName;
+@end
+
+
+
+// create Delegate
 @interface DetailViewController : UIViewController
 
+// used to change the navigationItem title to current city name
 @property City *city;
 
-@property NSString *cityName;
-@property NSString *stateName;
-@property NSString *cityImage;
-
-@property NSString *denverImage;
-@property NSString *houstonImage;
-@property NSString *seattleImage;
-@property NSString *sandiegoImage;
-
-- (void)deleteCity;
+// must use ChangeTitleDelegate not DetailViewControllerDelegate when referenced
+@property (nonatomic, assign) id<DetailViewControllerDelegate>delegate;
 
 @end
 

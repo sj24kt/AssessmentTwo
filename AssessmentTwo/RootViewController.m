@@ -9,82 +9,99 @@
 #import "RootViewController.h"
 #import "City.h"
 #import "DetailViewController.h"
-#import <UIKit/UIKit.h>
 
-@interface RootViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface RootViewController () <UITableViewDataSource, UITableViewDelegate, DetailViewControllerDelegate>
+
 @property (strong, nonatomic)  IBOutlet UITableView *tableView;
 @property NSMutableArray *cities;
-@property UISwipeGestureRecognizer *swipeGesture;
-@property (strong, nonatomic) NSIndexPath *indexPathToBeDeleted;
 
 @end
 
 @implementation RootViewController
 
+#pragma mark - ViewLifeCycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self loadInitialValues];
+
+    // create city objects array
+    self.cities = [NSMutableArray new];
+    [self loadCityStateImageArray];
 }
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.tableView reloadData];    // update table after any changes
+}
+
+#pragma mark - UITableView
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.cities.count;
 }
 
-#pragma mark - Helper methods
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+// For each object in array load a new tableViewCell with info
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"CityCell"];
-    City *newCity = [self.cities objectAtIndex:indexPath.row]; // creates a city w/custom initializer
 
-    cell.textLabel.text = [[self.cities objectAtIndex:indexPath.row] cityName];
-    cell.detailTextLabel.text = newCity.stateName;
-    cell.detailTextLabel.text = [[self.cities objectAtIndex:indexPath.row] cityImage];
+    City *cities = [self.cities objectAtIndex:indexPath.row];
+    cell.textLabel.text = cities.cityName;          // sets the city name as primary on row cell
+    cell.detailTextLabel.text = cities.stateName;   // sets the state name as small detail
+    cell.imageView.image = cities.cityImage;        // sets the city image to the cell's left
+
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [tableView deleteRowsAtIndexPaths:self.cities withRowAnimation:UITableViewRowAnimationTop];
-    }
-    [tableView reloadData];
+// check to make editing changes to row
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
 }
 
+// if row can be edited, delete row and update the tableView
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 
-- (void)loadInitialValues {
-    City *cityOne = [[City alloc] initWithCityName:@"Denver"
-                                        andStateName:@"Colorado"
-                                        andCityImage:@"Denver.png"];
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [self.cities removeObjectAtIndex:indexPath.row];
+        [self.tableView reloadData];
+    }
+}
 
-    City *cityTwo = [[City alloc] initWithCityName:@"Seattle"
-                                        andStateName:@"Washington"
-                                        andCityImage:@"Seattle.png"];
+#pragma mark - Helper Method
 
-    City *cityThree = [[City alloc] initWithCityName:@"Houston"
-                                        andStateName:@"Texas"
-                                        andCityImage:@"Houston.png"];
+// load new city/state/cityImage in Array
+- (void)loadCityStateImageArray {
+    City *cityOne = [[City alloc] initWithCityName:@"Denver" andStateName:@"Colorado" andCityImage:[UIImage imageNamed:@"Denver"]];
 
-    City *cityFour = [[City alloc] initWithCityName:@"SanDiego"
-                                        andStateName:@"California"
-                                        andCityImage:@"sanDiego.png"];
+    City *cityTwo = [[City alloc] initWithCityName:@"Houston" andStateName:@"Texas" andCityImage:[UIImage imageNamed:@"Houston"]];
 
-    self.cities = [NSMutableArray arrayWithObjects:cityOne,cityTwo,cityThree, cityFour, nil];
-//    for (City *city in self.cities) {
-//        NSLog(@"city: %@ state: %@ pix: %@", city.cityName, city.stateName, city.cityImage);
-//    }
+    City *cityThree = [[City alloc] initWithCityName:@"Seattle" andStateName:@"Washington" andCityImage:[UIImage imageNamed:@"Seattle"]];
 
+    City *cityFour = [[City alloc]  initWithCityName:@"San Diego" andStateName:@"California" andCityImage:[UIImage imageNamed:@"SanDiego"]];
 
+    self.cities = [NSMutableArray arrayWithObjects:cityOne, cityTwo, cityThree, cityFour, nil];
 }
 
 #pragma mark - UISegue
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(UITableViewCell *)cell {
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    City *newCity = [self.cities objectAtIndex:indexPath.row];
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 
-    DetailViewController *detail = segue.destinationViewController;
+    if ([segue.identifier isEqualToString:@"ShowCitySegue"]) {
 
-    detail.cityName = newCity.cityName;
-    detail.stateName = newCity.stateName;
-    detail.cityImage = newCity.cityImage;
+        NSIndexPath *index = [self.tableView indexPathForCell:sender];  // table row
+        City *city = [self.cities objectAtIndex:index.row];             // access city properties
+
+        DetailViewController *detailVC = segue.destinationViewController;
+        detailVC.city = city;           // delegate property
+        detailVC.title = city.cityName; // set detailVC navbar title to current city's name
+        detailVC.delegate = self;       // reference the delegate
+    }
+}
+
+#pragma mark -ChangeTitleDelegate
+
+// update the title in the navigation bar
+-(void)changeTitleButtonTapped:(NSString *)cityName {
+    self.navigationItem.title = cityName;
 }
 
 @end

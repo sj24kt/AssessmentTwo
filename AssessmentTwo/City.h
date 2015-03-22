@@ -10,11 +10,43 @@
 #import <UIKit/UIKit.h>
 
 @interface City : NSObject
+
 @property NSString *cityName;
 @property NSString *stateName;
-@property NSString *cityImage;
+@property UIImage *cityImage;
 
 - (instancetype)initWithCityName:(NSString *)cityName
                     andStateName:(NSString *)stateName
-                    andCityImage:(NSString *)cityImage;
+                    andCityImage:(UIImage *)cityImage;
+
+// needed for renaming city and state
+- (void)initNewCityName:(NSString *)newName;
+- (void)initNewStateName:(NSString *)newState;
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -13,7 +13,7 @@
 
 - (instancetype)initWithCityName:(NSString *)cityName
                     andStateName:(NSString *)stateName
-                    andCityImage:(NSString *)cityImage
+                    andCityImage:(UIImage *)cityImage
 {
     self = [super init];
 
@@ -22,11 +22,30 @@
         self.stateName = stateName;
         self.cityImage = cityImage;
     }
-
     return self;
 }
 
+// needed for renaming city and state
+- (void)initNewCityName:(NSString *)newName {
+    self.cityName = newName;
+}
+
+- (void)initNewStateName:(NSString *)newState {
+    self.stateName = newState;
+}
+
 @end
+
+
+
+
+
+
+
+
+
+
+
 
 
 

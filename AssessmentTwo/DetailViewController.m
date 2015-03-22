@@ -7,18 +7,15 @@
 //
 
 #import "DetailViewController.h"
+#import "WikiViewController.h"
 
-@interface DetailViewController ()
-@property (weak, nonatomic) IBOutlet UITableView *cityTableView;
-@property IBOutlet UITextField *cityNameTextField;
-@property IBOutlet UITextField *stateNameTextField;
-@property IBOutlet UIImageView *imageView;
+@interface DetailViewController () <UITextFieldDelegate>
 
-@property NSMutableArray *cities;
-@property NSMutableArray *images;
-
-@property UISwipeGestureRecognizer *swipeGesture;
-@property (strong, nonatomic) NSIndexPath *indexPathToBeDeleted;
+@property (weak, nonatomic) IBOutlet UITextField *cityTextField;
+@property (weak, nonatomic) IBOutlet UITextField *stateTextField;
+@property (weak, nonatomic) IBOutlet UIImageView *cityImageView;
+@property (weak, nonatomic) IBOutlet UILabel *wikipediaLabel;
+@property (weak, nonatomic) IBOutlet UIButton *changeTitle;
 
 @end
 
@@ -26,22 +23,96 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.cities = [[NSMutableArray alloc] init];
 
-    self.cityName = self.city.cityName;
-    self.stateName = self.city.stateName;
-    self.cityImage = self.cityImage;
+    self.cityTextField.text = self.city.cityName;
+    self.stateTextField.text = self.city.stateName;
+    self.cityImageView.image = self.city.cityImage;
 
-    //City *cityOneImage = [[City alloc] initWithCityName:self.cityName andStateName:self.stateName andCityImage:self.cityImage];
+    self.changeTitle.layer.cornerRadius = 4;
 }
 
+# pragma mark - UITextField
 
+// when a new city/state is entered upate the city array
+- (IBAction)textFieldDidChanged:(UITextField *)sender {
 
-- (void)deleteCity {
-    self.cityName = nil;
-    self.stateName = nil;
-    self.cityImage = nil;
+    if (![self.city.cityName isEqual:self.cityTextField]) {
+        self.city.cityName = self.cityTextField.text;
+    } else if (![self.city.stateName isEqual:self.stateTextField]) {
+        self.city.stateName = self.stateTextField.text;
+    }
 }
+
+// clears the entire textField on clicking in box
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    if (![self.cityTextField isEqual:nil]) {
+        [self.cityTextField clearsOnBeginEditing];
+        self.cityTextField.placeholder = @"enter a city name";
+
+    } else if (![self.stateTextField isEqual:nil]) {
+        [self.cityTextField clearsOnBeginEditing];
+        self.stateTextField.placeholder = @"enter a state name";
+    }
+}
+
+// dismisses keyboard
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+
+    // dismiss keyboard
+    if (self.cityTextField) {
+        [self.cityTextField resignFirstResponder];
+    } else if (self.stateTextField) {
+        [self.stateTextField resignFirstResponder];
+    }
+    return YES;
+}
+
+#pragma mark - UINavigationBar
+
+// updates the navbar title & the cities array with the newly entered textfield
+// and change image to generic image of state
+- (IBAction)changeTitleButtonTapped:(NSString *)cityName {
+    if (![self.city.cityName isEqual:self.cityTextField]) {
+        self.navigationItem.title = self.cityTextField.text;
+        self.city.cityName = self.cityTextField.text;
+
+        if ([self.city.stateName isEqual:@"Colorado"]) {
+            self.city.cityName = @"Colorado";
+            self.city.cityImage = [UIImage imageNamed:self.city.cityName];
+        } else if ([self.city.stateName isEqual:@"Texas"]) {
+            self.city.cityName = @"Texas";
+            self.city.cityImage = [UIImage imageNamed:self.city.cityName];
+        } else if ([self.city.stateName isEqual:@"Washington"]) {
+            self.city.cityName = @"Washington";
+            self.city.cityImage = [UIImage imageNamed:self.city.cityName];
+        } else if ([self.city.stateName isEqual:@"California"]) {
+            self.city.cityName = @"California";
+            self.city.cityImage = [UIImage imageNamed:self.city.cityName];
+        }
+
+    }
+}
+
+#pragma mark - UITapGestureRecognizer
+
+// if the tap falls inside the wiki label, segue to wikiVC
+- (IBAction)onLabelTapped:(UITapGestureRecognizer *)tapGestureRecognizer {
+
+    CGPoint point = [tapGestureRecognizer locationInView:self.view];
+    if (CGRectContainsPoint(self.wikipediaLabel.frame, point)) {
+        [self performSegueWithIdentifier:@"ShowWikiSegue" sender:nil];
+    }
+}
+
+#pragma mark -Segue
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"ShowWikiSegue"]) {
+        WikiViewController *wikiVC = segue.destinationViewController;
+        wikiVC.proxyCity = self.city.cityName;
+    }
+}
+
 
 
 

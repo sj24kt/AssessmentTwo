@@ -16,6 +16,7 @@
 		181A051D1ABC5B2200D3E6D5 /* AssessmentTwoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 181A051C1ABC5B2200D3E6D5 /* AssessmentTwoTests.m */; };
 		181A05281ABC64F900D3E6D5 /* City.m in Sources */ = {isa = PBXBuildFile; fileRef = 181A05271ABC64F900D3E6D5 /* City.m */; };
 		181A052B1ABC70D900D3E6D5 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 181A052A1ABC70D900D3E6D5 /* DetailViewController.m */; };
+		181A05311ABD09C200D3E6D5 /* WikiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 181A05301ABD09C200D3E6D5 /* WikiViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,8 @@
 		181A05271ABC64F900D3E6D5 /* City.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = City.m; sourceTree = "<group>"; };
 		181A05291ABC70D900D3E6D5 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		181A052A1ABC70D900D3E6D5 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		181A052F1ABD09C200D3E6D5 /* WikiViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WikiViewController.h; path = ../WikiViewController.h; sourceTree = "<group>"; };
+		181A05301ABD09C200D3E6D5 /* WikiViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WikiViewController.m; path = ../WikiViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +96,8 @@
 				181A05081ABC5B2200D3E6D5 /* RootViewController.m */,
 				181A05291ABC70D900D3E6D5 /* DetailViewController.h */,
 				181A052A1ABC70D900D3E6D5 /* DetailViewController.m */,
+				181A052F1ABD09C200D3E6D5 /* WikiViewController.h */,
+				181A05301ABD09C200D3E6D5 /* WikiViewController.m */,
 				181A05261ABC64F900D3E6D5 /* City.h */,
 				181A05271ABC64F900D3E6D5 /* City.m */,
 				181A050A1ABC5B2200D3E6D5 /* Main.storyboard */,
@@ -231,6 +236,7 @@
 			files = (
 				181A052B1ABC70D900D3E6D5 /* DetailViewController.m in Sources */,
 				181A05091ABC5B2200D3E6D5 /* RootViewController.m in Sources */,
+				181A05311ABD09C200D3E6D5 /* WikiViewController.m in Sources */,
 				181A05061ABC5B2200D3E6D5 /* AppDelegate.m in Sources */,
 				181A05281ABC64F900D3E6D5 /* City.m in Sources */,
 				181A05031ABC5B2200D3E6D5 /* main.m in Sources */,
