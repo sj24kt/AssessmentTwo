@@ -68,29 +68,14 @@
 }
 
 #pragma mark - UINavigationBar
+// if the city name is different from that in the array then
+// update the navbar title & the cities array with the newly entered textfield
 
-// updates the navbar title & the cities array with the newly entered textfield
-// and change image to generic image of state
 - (IBAction)changeTitleButtonTapped:(NSString *)cityName {
-    if (![self.city.cityName isEqual:self.cityTextField]) {
-        self.navigationItem.title = self.cityTextField.text;
-        self.city.cityName = self.cityTextField.text;
 
-        if ([self.city.stateName isEqual:@"Colorado"]) {
-            self.city.cityName = @"Colorado";
-            self.city.cityImage = [UIImage imageNamed:self.city.cityName];
-        } else if ([self.city.stateName isEqual:@"Texas"]) {
-            self.city.cityName = @"Texas";
-            self.city.cityImage = [UIImage imageNamed:self.city.cityName];
-        } else if ([self.city.stateName isEqual:@"Washington"]) {
-            self.city.cityName = @"Washington";
-            self.city.cityImage = [UIImage imageNamed:self.city.cityName];
-        } else if ([self.city.stateName isEqual:@"California"]) {
-            self.city.cityName = @"California";
-            self.city.cityImage = [UIImage imageNamed:self.city.cityName];
-        }
-
-    }
+    self.navigationItem.title = self.cityTextField.text;
+    self.navigationItem.title = self.cityTextField.text;
+    self.city.cityName = self.cityTextField.text;
 }
 
 #pragma mark - UITapGestureRecognizer
@@ -107,11 +92,13 @@
 #pragma mark -Segue
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+
     if ([segue.identifier isEqualToString:@"ShowWikiSegue"]) {
         WikiViewController *wikiVC = segue.destinationViewController;
         wikiVC.proxyCity = self.city.cityName;
     }
 }
+
 
 
 
